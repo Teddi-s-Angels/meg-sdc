@@ -1,0 +1,23 @@
+//GET request for all questions
+/questions
+
+//GET request for all answers
+/answers
+
+//POST request for questions
+/postquestion
+
+//POST request for answers 
+/postanswer
+
+//PUT request for helpful questions
+/questionhelpful
+
+//PUT request for reporting a question 
+/questionreport
+
+//PUT request for marking answer as helpful
+/answerhelpful
+
+//PUT request for reporting answer 
+/answerreport
