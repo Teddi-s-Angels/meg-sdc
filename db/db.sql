@@ -28,7 +28,7 @@ CREATE TABLE questions (
 
 CREATE TABLE answers (
    answer_id SERIAL PRIMARY KEY,
-   question_id INT GENERATED ALWAYS AS IDENTITY,
+   question_id INT,
    answer_body VARCHAR(255),
    answer_date DATE,
    answerer_name VARCHAR(255),

@@ -9,7 +9,7 @@ app.use(cors())
 
 
     const getQuestions = (req, res) => {
-      pool.query('SELECT * FROM questions', (error, results) => {
+      pool.query('SELECT * FROM qa.questions', (error, results) => {
         if (error) {
           console.log(`error at get Q's`)
         }
@@ -17,29 +17,54 @@ app.use(cors())
       })
     }
 
+    const getAnswers = (req, res) => {
+        pool.query('SELECT * FROM qa.answers', (error, results) => {
+          if (error) {
+            console.log(`error at get A's`)
+          }
+          res.send(results.rows)
+        })
+      }
 
-
-// const addBook = (request, response) => {
-//   const {author, title} = request.body
-
-//   pool.query(
-//     'INSERT INTO books (author, title) VALUES ($1, $2)',
-//     [author, title],
-//     (error) => {
-//       if (error) {
-//         throw error
-//       }
-//       response.status(201).json({status: 'success', message: 'Book added.'})
-//     },
-//   )
-// }
+    const postQuestion = (req, res) => {
+        // pool.query(`INSERT INTO qa.questions (product_id, question_body, question_date, asker_name, helpfulness, reported) \
+        // VALUES (${req.params.id}, ${req.body})`, (error, results) => {
+        //     if (error) {
+        //       console.log(`error at get A's`)
+        //     }
+        //     res.send(results.rows)
+        //   })    
+        res.send([req.params.id, req.body])
+    }  
+    
 
 app
   .route('/questions')
   // GET endpoint
   .get(getQuestions)
-  // POST endpoint
-//   .post(addBook)
+  
+app
+  .route('/answers')
+  .get(getAnswers)
+app
+//add product id to route
+  .route('/postquestion/:id')
+  .post(postQuestion)
+
+//   .route('/postanswer')
+//   .post(postAnswer)
+
+//   .route('/questionhelpful/:id')
+//   .put(questionHelpful)
+
+//   .route('/questionreport/:id')
+//   .put(reportQuestion)
+
+//   .route('/answerhelpful/:id')
+//   .put(answerHelpful)
+
+//   .route('/answerreport/:id')
+//   .put(reportAnswer)
 
 // Start server
 app.listen(process.env.PORT || 3002, () => {
