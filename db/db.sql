@@ -14,6 +14,7 @@ DROP TABLE IF EXISTS answers;
 DROP TABLE IF EXISTS photos;
 
 CREATE SCHEMA qa;
+SET search_path TO qa, public;
 
 CREATE TABLE questions (
    question_id SERIAL PRIMARY KEY,
