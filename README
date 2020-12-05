@@ -1,23 +1,23 @@
-//GET request for questions
-axios.get("http://52.26.193.201:3000/qa/:product_id")
+//GET request for all questions
+/questions
 
-//GET request for answers
-axios.get("http://52.26.193.201:3000/qa/:question_id/answers")
+//GET request for all answers
+/answers
 
 //POST request for questions
-axios.post("http://52.26.193.201:3000/qa/:product_id", data)
+/postquestion
 
 //POST request for answers 
-axios.post("http://52.26.193.201:3000/qa/:question_id/answers", data)
+/postanswer
 
 //PUT request for helpful questions
-axios.put("http://52.26.193.201:3000/qa/question/:question_id/helpful", data)
+/questionhelpful
 
 //PUT request for reporting a question 
-axios.put("http://52.26.193.201:3000/qa/question/:question_id/report", data)
+/questionreport
 
 //PUT request for marking answer as helpful
-axios.put("http://52.26.193.201:3000/qa/answer/:answer_id/helpful", data)
+/answerhelpful
 
 //PUT request for reporting answer 
-axios.put("http://52.26.193.201:3000/qa/answer/:answer_id/report", data)
+/answerreport
