@@ -27,16 +27,28 @@ app.use(cors())
       }
 
     const postQuestion = (req, res) => {
-        // pool.query(`INSERT INTO qa.questions (product_id, question_body, question_date, asker_name, helpfulness, reported) \
-        // VALUES (${req.params.id}, ${req.body})`, (error, results) => {
-        //     if (error) {
-        //       console.log(`error at get A's`)
-        //     }
-        //     res.send(results.rows)
-        //   })    
-        res.send([req.params.id, req.body])
+
+        let postVals = [req.params.id, Object.values(req.body)].flat();
+        let p_id = Number(req.params.id);
+        let q_body = postVals[1]
+        let q_date = postVals[2];
+        let name = postVals[3];
+        let help = postVals[4];
+        let reported = postVals[5];
+
+        pool.query(`INSERT INTO qa.questions(product_id, question_body, question_date, asker_name, helpfulness, reported)
+        VALUES ($1, $2, $3, $4, $5, $6)`, [p_id, q_body, q_date, name, help, reported], (err) => {
+          if (err) {
+            console.log(err)
+          }
+          res.send('success')
+        })    
     }  
-    
+ 
+    const postAnswer = (req, res) => {
+
+
+    }
 
 app
   .route('/questions')

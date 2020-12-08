@@ -20,7 +20,7 @@ CREATE TABLE questions (
    question_id SERIAL PRIMARY KEY,
    product_id INT,
    question_body VARCHAR(255),
-   question_date DATE,
+   question_date VARCHAR(255),
    asker_name VARCHAR(255),
    helpfulness INT,
    reported BOOLEAN
