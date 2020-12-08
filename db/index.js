@@ -1,73 +1,97 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const {pool} = require('./config')
+const { pool } = require('./config')
 const app = express()
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
 
 
-    const getQuestions = (req, res) => {
-      pool.query('SELECT * FROM qa.questions', (error, results) => {
-        if (error) {
-          console.log(`error at get Q's`)
-        }
-        res.send(results.rows)
-      })
+const getQuestions = (req, res) => {
+  //res.send(req.params.id)
+  pool.query('SELECT * FROM qa.questions WHERE product_id = ($1)', [req.params.id], (error, results) => {
+    if (error) {
+      console.log(`error at get Q's`)
     }
+    res.send(results.rows)
+  })
+}
 
-    const getAnswers = (req, res) => {
-        pool.query('SELECT * FROM qa.answers', (error, results) => {
-          if (error) {
-            console.log(`error at get A's`)
-          }
-          res.send(results.rows)
-        })
-      }
+const getAnswers = (req, res) => {
 
-    const postQuestion = (req, res) => {
+  pool.query('SELECT * FROM qa.answers WHERE question_id = ($1)', [req.params.id], (error, results) => {
+    if (error) {
+      console.log(error)
+    }
+    res.send(results.rows)
+  })
+}
 
-        let postVals = [req.params.id, Object.values(req.body)].flat();
-        let p_id = Number(req.params.id);
-        let q_body = postVals[1]
-        let q_date = postVals[2];
-        let name = postVals[3];
-        let help = postVals[4];
-        let reported = postVals[5];
+const postQuestion = (req, res) => {
 
-        pool.query(`INSERT INTO qa.questions(product_id, question_body, question_date, asker_name, helpfulness, reported)
+  let postVals = [req.params.id, Object.values(req.body)].flat();
+  let p_id = Number(req.params.id);
+  let q_body = postVals[1]
+  let q_date = postVals[2];
+  let name = postVals[3];
+  let help = postVals[4];
+  let reported = postVals[5];
+
+  pool.query(`INSERT INTO qa.questions(product_id, question_body, question_date, asker_name, helpfulness, reported)
         VALUES ($1, $2, $3, $4, $5, $6)`, [p_id, q_body, q_date, name, help, reported], (err) => {
-          if (err) {
-            console.log(err)
-          }
-          res.send('success')
-        })    
-    }  
- 
-    const postAnswer = (req, res) => {
-
-
+    if (err) {
+      console.log(err)
     }
+    res.send('success')
+  })
+}
+
+const postAnswer = (req, res) => {
+  let answerVal = [Number(req.params.id), Object.values(req.body)].flat();
+  pool.query(`INSERT INTO qa.answers(question_id, answer_body, answer_date, answerer_name, helpfulness, reported)
+        VALUES ($1, $2, $3, $4, $5, $6)`, answerVal, (err) => {
+    if (err) {
+      console.log(err)
+    }
+    res.send('success')
+  })
+
+}
+
+const questionHelpful = (req, res) => {
+
+  let id = (req.params.id);
+  pool.query(`Update qa.questions SET helpfulness = helpfulness+1 WHERE question_id = $1`, [id],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+      } else {
+        res.send('helpfulness updated');
+      }
+    })
+}
+
 
 app
-  .route('/questions')
+  .route('/questions/:id')
   // GET endpoint
   .get(getQuestions)
-  
+
 app
-  .route('/answers')
+  .route('/answers/:id')
   .get(getAnswers)
 app
-//add product id to route
+  //add product id to route
   .route('/postquestion/:id')
   .post(postQuestion)
 
-//   .route('/postanswer')
-//   .post(postAnswer)
-
-//   .route('/questionhelpful/:id')
-//   .put(questionHelpful)
+app
+  .route('/postanswer/:id')
+  .post(postAnswer)
+app
+  .route('/questionhelpful/:id')
+  .put(questionHelpful)
 
 //   .route('/questionreport/:id')
 //   .put(reportQuestion)

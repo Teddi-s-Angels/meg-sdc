@@ -30,7 +30,7 @@ CREATE TABLE answers (
    answer_id SERIAL PRIMARY KEY,
    question_id INT,
    answer_body VARCHAR(255),
-   answer_date DATE,
+   answer_date VARCHAR(255),
    answerer_name VARCHAR(255),
    helpfulness INT,
    reported BOOLEAN
