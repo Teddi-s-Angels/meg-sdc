@@ -72,6 +72,20 @@ const questionHelpful = (req, res) => {
     })
 }
 
+//reports question to TRUE because a question can only be reported 1x before it is hidden from front-end
+const reportQuestion = (req, res) => {
+
+  let id = (req.params.id);
+  pool.query(`Update qa.questions SET reported = true WHERE question_id = $1`, [id],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+      } else {
+        res.send('question updated');
+      }
+    })
+}
+
 
 app
   .route('/questions/:id')
@@ -93,8 +107,9 @@ app
   .route('/questionhelpful/:id')
   .put(questionHelpful)
 
-//   .route('/questionreport/:id')
-//   .put(reportQuestion)
+app
+  .route('/questionreport/:id')
+  .put(reportQuestion)
 
 //   .route('/answerhelpful/:id')
 //   .put(answerHelpful)
