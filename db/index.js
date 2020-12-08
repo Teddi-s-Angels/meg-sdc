@@ -99,6 +99,18 @@ const reportQuestion = (req, res) => {
     })
 }
 
+const reportAnswer = (req, res) => {
+ 
+  let id = (req.params.id);
+  pool.query(`Update qa.answers SET reported = true WHERE question_id = $1`, [id],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+      } else {
+        res.send('answer has been reported');
+      }
+    })
+}
 
 app
   .route('/questions/:id')
@@ -127,9 +139,9 @@ app
 app
   .route('/answerhelpful/:id')
   .put(answerHelpful)
-
-//   .route('/answerreport/:id')
-//   .put(reportAnswer)
+app
+  .route('/answerreport/:id')
+  .put(reportAnswer)
 
 // Start server
 app.listen(process.env.PORT || 3002, () => {
