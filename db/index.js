@@ -72,6 +72,19 @@ const questionHelpful = (req, res) => {
     })
 }
 
+const answerHelpful = (req, res) => {
+
+  let id = (req.params.id);
+  pool.query(`Update qa.answers SET helpfulness = helpfulness+1 WHERE question_id = $1`, [id],
+    (error, results) => {
+      if (error) {
+        console.log(error);
+      } else {
+        res.send('answer helpfulness updated');
+      }
+    })
+}
+
 //reports question to TRUE because a question can only be reported 1x before it is hidden from front-end
 const reportQuestion = (req, res) => {
 
@@ -111,8 +124,9 @@ app
   .route('/questionreport/:id')
   .put(reportQuestion)
 
-//   .route('/answerhelpful/:id')
-//   .put(answerHelpful)
+app
+  .route('/answerhelpful/:id')
+  .put(answerHelpful)
 
 //   .route('/answerreport/:id')
 //   .put(reportAnswer)
