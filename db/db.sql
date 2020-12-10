@@ -17,7 +17,7 @@ CREATE SCHEMA qa;
 SET search_path TO qa, public;
 
 CREATE TABLE questions (
-   question_id SERIAL PRIMARY KEY,
+   question_id INT,
    product_id INT,
    question_body VARCHAR(255),
    question_date VARCHAR(255),
