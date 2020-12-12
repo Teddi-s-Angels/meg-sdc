@@ -3,10 +3,10 @@ const faker = require('faker')
 const argv = require('yargs').argv
 
 const lines = argv.lines || 1000000
-const filename = argv.output || './my.csv'
+const filename = argv.output || './my10.csv'
 const stream = fs.createWriteStream(filename)
 
-var id = 1;
+var id = 9000001;
 const createPost = () => {
     const q_id = id;
     const temp_id = id;
@@ -50,7 +50,7 @@ const createPost = () => {
   }
 
   //write our `header` line before we invoke the loop
-stream.write(`question_id,product_id,question_body,question_date,asker_name,helpfulness,reported\n`, 'utf-8')
+// stream.write(`question_id,product_id,question_body,question_date,asker_name,helpfulness,reported\n`, 'utf-8')
 //invoke startWriting and pass callback
 startWriting(stream, 'utf-8', () => {
   stream.end()
